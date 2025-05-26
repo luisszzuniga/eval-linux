@@ -1,0 +1,17 @@
+[DEFAULT]
+bantime = 1h
+findtime = 10m
+maxretry = 3
+banaction = iptables-multiport
+chain = INPUT
+loglevel = INFO
+
+[flask-auth]
+enabled = true
+filter = flask-auth
+logpath = /var/log/auth.log
+port = http,https
+banaction = iptables-multiport
+findtime = 5m
+maxretry = 2
+bantime = 15m 

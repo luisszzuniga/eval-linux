@@ -24,11 +24,17 @@ La solution repose sur une architecture à deux bases de données :
 - Génération de rapports de CA
 - Interface d'administration via phpMyAdmin
 
-## Installation
-
-1. Prérequis :
+## Prérequis :
    - Docker
    - Docker Compose
+
+## Installation
+
+1. Cloner le dépôt :
+   ```bash
+   git clone git@github.com:luisszzuniga/eval-linux.git
+   cd exercice1
+   ```
 
 2. Démarrage :
    ```bash

@@ -1,0 +1,58 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../app:/app
+      - auth_logs:/var/log
+    networks:
+      - web_network
+
+  caddy:
+    image: caddy:2.4.6
+    ports:
+      - "80:80"
+    volumes:
+      - ../config/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - caddy_logs:/var/log/caddy
+    depends_on:
+      - app
+    networks:
+      - web_network
+
+  fail2ban:
+    image: crazymax/fail2ban:latest
+    container_name: fail2ban
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+      - SYS_MODULE
+    volumes:
+      - ../config/jail.local:/etc/fail2ban/jail.local:ro
+      - ../config/filter.d:/etc/fail2ban/filter.d:ro
+      - auth_logs:/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /lib/modules:/lib/modules:ro
+      - /etc/modprobe.d:/etc/modprobe.d:ro
+    environment:
+      - TZ=Europe/Paris
+      - F2B_LOG_TARGET=STDOUT
+      - F2B_LOG_LEVEL=DEBUG
+      - F2B_DB_PURGE_AGE=1d
+    privileged: true
+    restart: always
+
+networks:
+  web_network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
+  caddy_logs:
+  auth_logs: 
