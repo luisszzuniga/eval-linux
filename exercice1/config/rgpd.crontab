@@ -1,0 +1,5 @@
+# Vérification quotidienne des comptes inactifs (tous les jours à 3h du matin)
+0 3 * * * /usr/local/bin/check_inactive.sh
+
+# Génération des rapports annuels (le 22 décembre à 4h du matin)
+0 4 22 12 * /usr/local/bin/generate_report.sh
